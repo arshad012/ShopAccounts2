@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Yadav Punching Arts</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav class="myNavbar">
+    <div>Yadav Punching Art</div>
+  </nav>
+
+  <!-- Button trigger addCustomerModal -->
+  <div class="container addCustomerModalButtonDiv">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+      Add new customer
+    </button>
+  </div>
+
+  <!-- addCustomerModal -->
+  <div class="modal fade" id="addCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="addCustomerModalLabel">Add new customer</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control" type="text" placeholder="Enter Name" aria-label="default input example"
+            id="enteredName">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelAddCustomer">Cancel</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="saveCustomer">Save Detail</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Button trigger reNameHandlerModal -->
+  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reNameHandlerModal">
+    Update name
+  </button> -->
+
+  <!-- reNameHandlerModal -->
+  <div class="modal fade" id="reNameHandlerModal" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="reNameHandlerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="reNameHandlerModalLabel">New Name</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control" type="text" placeholder="Enter new name" aria-label="default input example"
+            id="newName">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelUpdateName">Cancel</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="updateName">Save Detail</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Button trigger deleteCustomerModal -->
+  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteCustomerModal">
+    Delete Customer
+  </button> -->
+
+  <!-- deleteCustomerModal -->
+  <div class="modal fade" id="deleteCustomerModal" tabindex="-1" aria-labelledby="deleteCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteCustomerModalLabel">Remove this customer</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger" role="alert">
+            Are you sure you want to delete this customer permanently, Once deleted it can not be restored
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" id="proceedDeleteCustomer">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Table -->
+  <div class="container tableContainer">
+    <table>
+      <thead>
+        <tr>
+          <td>Name</td>
+          <td>Amount</td>
+          <td>Entry</td>
+          <td>Remove</td>
+        </tr>
+      </thead>
+
+      <tbody id="dataTableBody">
+        <!-- Dynamic data -->
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="footer">
+    <div class="footerText">We Design Embroidery</div>
+    <div class="contactUs">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="whatsApp">
+      <p>+91 7838098520</p>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
+    crossorigin="anonymous"></script>
+
+  <script src="index.js"></script>
+</body>
+
+</html>
