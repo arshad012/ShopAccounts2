@@ -1,3 +1,9 @@
+
+body {
+  position: relative;
+  min-height: 100vh;
+}
+
 table,
 th,
 td {
@@ -48,17 +54,20 @@ td {
 
 .myNavbar > div {
   font-size: 50px;
+  font-style: italic;
   text-align: center;
   letter-spacing: 0.7rem;
   word-spacing: 3rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .footer {
   background-color: #171c26;
-  margin-top: 300px;
   height: 300px;
   color: #ffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .footerText {
@@ -78,8 +87,16 @@ td {
 .contactUs img {
   width: 100px;
 }
+
 .entryField > div {
   position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.entryField input:first-child {
+  width: 100px;
+  text-align: center;
 }
 .entryField .alertMessage {
   position: absolute;
@@ -91,4 +108,85 @@ td {
   padding: 0px 30px;
   border-radius: 5px;
   display: none;
+}
+
+.manualContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+
+@media screen and (max-width: 1024px) {
+  .myNavbar > div {
+    font-size: 40px;
+    letter-spacing: 0.4rem;
+    word-spacing: 2rem;
+  }
+
+  .footer {
+    height: 270px;
+  }
+  .footerText {
+    font-size: 40px;
+  }
+
+  .contactUs {
+    gap: 40px;
+    margin-top: 20px;
+    font-size: 30px;
+  }
+  .contactUs img {
+    width: 80px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .myNavbar > div {
+    font-size: 40px;
+    letter-spacing: 0.2rem;
+    word-spacing: 1rem;
+    font-weight: 500;
+  }
+
+  .footer {
+    height: 220px;
+  }
+  .footerText {
+    font-size: 30px;
+  }
+
+  .contactUs {
+    gap: 30px;
+    margin-top: 15px;
+    font-size: 25px;
+  }
+  .contactUs img {
+    width: 70px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .myNavbar > div {
+    font-size: 20px;
+    font-weight: 300;
+  }
+
+  .footer {
+    height: 180px;
+  }
+  .footerText {
+    font-size: 20px;
+  }
+
+  .contactUs {
+    gap: 20px;
+    margin-top: 15px;
+    font-size: 20px;
+  }
+  .contactUs img {
+    width: 50px;
+  }
 }

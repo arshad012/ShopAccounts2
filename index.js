@@ -12,6 +12,13 @@ document.getElementById('addCustomerModal').addEventListener('shown.bs.modal', f
     myInput.focus();
 });
 
+document.getElementById('reNameHandlerModal').addEventListener('shown.bs.modal', () => {
+    const newNameInput = document.getElementById('newName');
+    newNameInput.focus();
+})
+
+const sameNameCusAlert = document.getElementById('sameNameCusAlert');
+
 let customersDetails = JSON.parse(localStorage.getItem('customersDetails')) || [];
 
 // [
@@ -36,6 +43,8 @@ let cusNameToDelete = '';
 
 
 function saveNewCustomer() {
+    sameNameCusAlert.style.display = 'none';
+
     let enteredName = document.getElementById('enteredName').value;
     if (enteredName == '') return;
 
@@ -44,6 +53,16 @@ function saveNewCustomer() {
     enteredName = enteredName.split('');
     enteredName[0] = enteredName[0].toUpperCase();
     enteredName = enteredName.join('');
+
+    let isNamePresent = false;
+    for(let cus of customersDetails) {
+        if(cus.name == enteredName) {
+            isNamePresent = true;
+            sameNameCusAlert.style.display = 'block';
+            sameNameCusAlert.innerText = `${cus.name} is already present in your list. Try another name.`
+            return;
+        }
+    }
 
     customersDetails.push({ name: enteredName, amount: 0 });
 
@@ -98,23 +117,31 @@ function appendData(data) {
         const entryField = document.createElement('td'); // td 3
         entryField.className = 'entryField';
 
-        const input = document.createElement('input');
-        input.setAttribute('placeholder', 'New Entry');
-        input.setAttribute('aria-label', "default input example");
-        input.addEventListener('keydown', () => {
+        const signInput = document.createElement('input');
+        signInput.setAttribute('placeholder', '+ or -');
+        signInput.setAttribute('aria-label', "default input example");
+        signInput.setAttribute('class', `form-control`);
+
+        signInput.addEventListener('input', () => {
+            isSignValid(event);
+        })
+
+        const numberInput = document.createElement('input');
+        numberInput.setAttribute('placeholder', 'New Entry');
+        numberInput.setAttribute('aria-label', "default input example");
+        numberInput.setAttribute('class', `form-control`);
+        numberInput.setAttribute('type', 'number');
+
+        numberInput.addEventListener('keydown', () => {
             updateData(event, cus.name);
         });
-        input.addEventListener('input', () => {
-            checkInput(event);
-        })
-        input.setAttribute('class', `form-control`);
 
         const alert = document.createElement('div');
         alert.innerText = 'Please enter a valid number';
         alert.className = 'alertMessage'
 
         const entryFieldChildDiv = document.createElement('div');
-        entryFieldChildDiv.append(input, alert);
+        entryFieldChildDiv.append(signInput, numberInput, alert);
 
         entryField.append(entryFieldChildDiv);
 
@@ -140,50 +167,27 @@ function appendData(data) {
 }
 
 
-function checkInput(e) {
-    const alertMessage = e.target.nextElementSibling;
+function isSignValid(e) {
     let value = e.target.value;
 
-    if (value[0] == '+' || value[0] == '-') {
-        value = value.slice(1, value.length);
-
-        value = Number(value);
-        let isNumber = Number.isInteger(value);
-
-        if (!isNumber) {
-            alertMessage.style.display = 'block';
-        }
-        else {
-            alertMessage.style.display = 'none';
-        }
+    if(value == '+' || value == '-') {
+        const nextInput = e.target.nextElementSibling;
+        nextInput.focus();
     }
-    else if(value != '') {
-        alertMessage.style.display = 'block';
+    else {
+        e.target.value = null;
     }
 }
 
 
 function updateData(e, customerName) {
-    const alertMessage = e.target.nextElementSibling;
 
     // adding value
     if (e.key == 'Enter') {
         let newValue = e.target.value;
-
-        let sign = newValue[0];
-        if (sign != '+' && sign != '-') {
-            alertMessage.style.display = 'block';
-            return;
-        }
-
-        newValue = newValue.slice(1, newValue.length);
-
         newValue = Number(newValue);
-        let isNumber = Number.isInteger(newValue);
-        if (!isNumber) {
-            alertMessage.style.display = 'block';
-            return;
-        }
+
+        const sign = e.target.previousElementSibling.value;
 
         switch (sign) {
             case "-":
