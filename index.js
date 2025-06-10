@@ -19,18 +19,17 @@ document.getElementById('reNameHandlerModal').addEventListener('shown.bs.modal',
 
 const sameNameCusAlert = document.getElementById('sameNameCusAlert');
 
-let customersDetails = JSON.parse(localStorage.getItem('customersDetails')) || [];
+document.getElementById('searchCustomer').addEventListener('input', searchCustomer);
 
-// [
-//     {name: 'Arshad mhd', amount: -1000},
-//     {name: 'Shaizy', amount: -630},
-//     {name: 'Rahul', amount: 220},
-//     {name: 'Asnal', amount: -1080},
-//     {name: 'Mobin', amount: -930},
-//     {name: 'Navneet', amount: -570},
-//     {name: 'MD Arshad', amount: 200},
-//     {name: 'Tofeek', amount: -410},
-// ]
+document.getElementById('searchInputCleaner').addEventListener('click', reselFilter);
+
+document.getElementById('sort_by_name').addEventListener('click', sort_by_name);
+// document.getElementById('sort_by_balance').addEventListener('click', sort_by_balance);
+document.getElementById('ascending_balance_sort').addEventListener('click', ascending_balance_sort);
+document.getElementById('descending_balance_sort').addEventListener('click', descending_balance_sort);
+
+
+let customersDetails = JSON.parse(localStorage.getItem('customersDetails')) || [];
 
 
 window.onload = () => {
@@ -40,6 +39,8 @@ window.onload = () => {
 
 let oldName = '';
 let cusNameToDelete = '';
+let filtered_data;
+let isDataSorted = false;
 
 
 function saveNewCustomer() {
@@ -54,10 +55,8 @@ function saveNewCustomer() {
     enteredName[0] = enteredName[0].toUpperCase();
     enteredName = enteredName.join('');
 
-    let isNamePresent = false;
-    for(let cus of customersDetails) {
-        if(cus.name == enteredName) {
-            isNamePresent = true;
+    for (let cus of customersDetails) {
+        if (cus.name.toLowerCase() == enteredName.toLowerCase()) {
             sameNameCusAlert.style.display = 'block';
             sameNameCusAlert.innerText = `${cus.name} is already present in your list. Try another name.`
             return;
@@ -76,9 +75,15 @@ function cancel_AddNewCustomer() {
 }
 
 
-function appendData(data) {
+async function appendData(data) {
+
     const tBody = document.getElementById('dataTableBody');
     tBody.innerHTML = null;
+
+    const value = document.getElementById('searchCustomer').value;
+    if(value || isDataSorted) {
+        data = filtered_data;
+    }
 
     data.forEach((cus, i) => {
 
@@ -131,17 +136,14 @@ function appendData(data) {
         numberInput.setAttribute('aria-label', "default input example");
         numberInput.setAttribute('class', `form-control`);
         numberInput.setAttribute('type', 'number');
+        numberInput.setAttribute('disabled', true);
 
         numberInput.addEventListener('keydown', () => {
             updateData(event, cus.name);
         });
 
-        const alert = document.createElement('div');
-        alert.innerText = 'Please enter a valid number';
-        alert.className = 'alertMessage'
-
         const entryFieldChildDiv = document.createElement('div');
-        entryFieldChildDiv.append(signInput, numberInput, alert);
+        entryFieldChildDiv.append(signInput, numberInput);
 
         entryField.append(entryFieldChildDiv);
 
@@ -170,11 +172,14 @@ function appendData(data) {
 function isSignValid(e) {
     let value = e.target.value;
 
-    if(value == '+' || value == '-') {
+    if (value == '+' || value == '-') {
         const nextInput = e.target.nextElementSibling;
+        nextInput.removeAttribute('disabled');
         nextInput.focus();
     }
     else {
+        const nextInput = e.target.nextElementSibling;
+        nextInput.setAttribute('disabled', true);
         e.target.value = null;
     }
 }
@@ -198,13 +203,16 @@ function updateData(e, customerName) {
                     }
                 }
                 break;
-            default:
+            case "+":
                 for (let customer of customersDetails) {
                     if (customer.name == customerName) {
                         customer.amount += newValue;
                         break;
                     }
                 }
+                break;
+            default:
+                // 
         }
 
         localStorage.setItem('customersDetails', JSON.stringify(customersDetails));
@@ -250,4 +258,85 @@ function proceedDeleteCustomer() {
     localStorage.setItem('customersDetails', JSON.stringify(customersDetails));
 
     appendData(customersDetails);
+}
+
+
+let timer = null;
+function searchCustomer() {
+    const value = document.getElementById('searchCustomer').value;
+
+    if(value == '') {
+        appendData(customersDetails);
+        return;
+    };
+
+    isDataSorted = false
+
+    if (timer) {
+        clearTimeout(timer);
+        timer = null;
+    }
+
+    timer = setTimeout(() => {
+        const value = document.getElementById('searchCustomer').value;
+
+        filtered_data = customersDetails.filter((cus) => {
+            return cus.name.toLowerCase().includes(value.toLowerCase())
+        });
+
+        appendData(filtered_data);
+    }, 500)
+}
+
+
+function reselFilter() {
+    let input = document.getElementById('searchCustomer');
+    input.value = null;
+
+    searchCustomer()
+}
+
+
+function sort_by_name() {
+    const value = document.getElementById('searchCustomer');
+    if(value) {
+        value.value = null;
+    }
+
+    let named_sorted_data = customersDetails.toSorted((a, b) => a.name.localeCompare(b.name));
+    appendData(named_sorted_data);
+}
+
+
+function ascending_balance_sort() {
+    const value = document.getElementById('searchCustomer');
+    if(value) {
+        value.value = null;
+    }
+
+    filtered_data = customersDetails.toSorted((a,b) => {
+        if(a.amount > b.amount) return 1;
+        else if(a.amount < b.amount) return -1;
+        else return 0;
+    });
+
+    isDataSorted = true;
+    appendData(filtered_data);
+
+}
+
+function descending_balance_sort() {
+    const value = document.getElementById('searchCustomer');
+    if(value) {
+        value.value = null;
+    }
+
+    filtered_data = customersDetails.toSorted((a,b) => {
+        if(a.amount > b.amount) return -1;
+        else if(a.amount < b.amount) return 1;
+        else return 0;
+    });
+
+    isDataSorted = true;
+    appendData(filtered_data);
 }

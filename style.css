@@ -4,6 +4,29 @@ body {
   min-height: 100vh;
 }
 
+.myNavbar {
+  background-color: #171c26;
+  color: #ffffff;
+}
+
+.myNavbar > div {
+  font-size: 50px;
+  font-style: italic;
+  text-align: center;
+  letter-spacing: 0.7rem;
+  word-spacing: 3rem;
+  font-weight: 700;
+}
+
+.addCustomerModalButtonDiv {
+  margin-block: 20px;
+}
+
+.searchInputDiv {
+  width: 400px;
+}
+
+
 table,
 th,
 td {
@@ -43,24 +66,6 @@ td {
   background-color: rgb(229, 229, 182);
 }
 
-.addCustomerModalButtonDiv {
-  margin: 20px auto;
-}
-
-.myNavbar {
-  background-color: #171c26;
-  color: #ffffff;
-}
-
-.myNavbar > div {
-  font-size: 50px;
-  font-style: italic;
-  text-align: center;
-  letter-spacing: 0.7rem;
-  word-spacing: 3rem;
-  font-weight: 700;
-}
-
 .footer {
   background-color: #171c26;
   height: 300px;
@@ -89,7 +94,6 @@ td {
 }
 
 .entryField > div {
-  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -98,23 +102,13 @@ td {
   width: 100px;
   text-align: center;
 }
-.entryField .alertMessage {
-  position: absolute;
-  top: 90%;
-  left: 10%;
-  z-index: 1000;
-  width: fit-content;
-  background-color: rgba(240, 7, 7, 0.5);
-  padding: 0px 30px;
-  border-radius: 5px;
-  display: none;
-}
 
 .manualContainer {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 200px;
 }
 
 
