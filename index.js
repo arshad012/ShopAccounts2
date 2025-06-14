@@ -1,5 +1,4 @@
 document.getElementById('saveCustomer').addEventListener('click', saveNewCustomer);
-
 document.getElementById('cancelAddCustomer').addEventListener('click', cancel_AddNewCustomer);
 
 document.getElementById('cancelUpdateName').addEventListener('click', cancelUpdateName);
@@ -20,11 +19,10 @@ document.getElementById('reNameHandlerModal').addEventListener('shown.bs.modal',
 const sameNameCusAlert = document.getElementById('sameNameCusAlert');
 
 document.getElementById('searchCustomer').addEventListener('input', searchCustomer);
-
-document.getElementById('searchInputCleaner').addEventListener('click', reselFilter);
+document.getElementById('searchInputCleaner').addEventListener('click', resetFilters);
+document.getElementById('resetFilters').addEventListener('click', resetFilters);
 
 document.getElementById('sort_by_name').addEventListener('click', sort_by_name);
-// document.getElementById('sort_by_balance').addEventListener('click', sort_by_balance);
 document.getElementById('ascending_balance_sort').addEventListener('click', ascending_balance_sort);
 document.getElementById('descending_balance_sort').addEventListener('click', descending_balance_sort);
 
@@ -80,8 +78,9 @@ async function appendData(data) {
     const tBody = document.getElementById('dataTableBody');
     tBody.innerHTML = null;
 
+    // this condition is only for mount phase.
     const value = document.getElementById('searchCustomer').value;
-    if(value || isDataSorted) {
+    if(value) {
         data = filtered_data;
     }
 
@@ -107,6 +106,8 @@ async function appendData(data) {
         reNameIcon.setAttribute('data-bs-target', "#reNameHandlerModal");
 
         reNameIcon.onclick = () => {
+            let renameInputField = document.getElementById('newName');
+            renameInputField.value = cus.name;
             oldName = cus.name;
         }
 
@@ -189,8 +190,7 @@ function updateData(e, customerName) {
 
     // adding value
     if (e.key == 'Enter') {
-        let newValue = e.target.value;
-        newValue = Number(newValue);
+        let newValue = Number(e.target.value);
 
         const sign = e.target.previousElementSibling.value;
 
@@ -216,7 +216,7 @@ function updateData(e, customerName) {
         }
 
         localStorage.setItem('customersDetails', JSON.stringify(customersDetails));
-        appendData(customersDetails);
+        appendData(filtered_data);
     }
 }
 
@@ -261,16 +261,10 @@ function proceedDeleteCustomer() {
 }
 
 
+// debouncer function
 let timer = null;
 function searchCustomer() {
     const value = document.getElementById('searchCustomer').value;
-
-    if(value == '') {
-        appendData(customersDetails);
-        return;
-    };
-
-    isDataSorted = false
 
     if (timer) {
         clearTimeout(timer);
@@ -278,7 +272,6 @@ function searchCustomer() {
     }
 
     timer = setTimeout(() => {
-        const value = document.getElementById('searchCustomer').value;
 
         filtered_data = customersDetails.filter((cus) => {
             return cus.name.toLowerCase().includes(value.toLowerCase())
@@ -289,54 +282,80 @@ function searchCustomer() {
 }
 
 
-function reselFilter() {
+function resetFilters() {
     let input = document.getElementById('searchCustomer');
     input.value = null;
 
-    searchCustomer()
+    appendData(customersDetails);
 }
 
 
 function sort_by_name() {
-    const value = document.getElementById('searchCustomer');
-    if(value) {
-        value.value = null;
-    }
+    // let value = document.getElementById('searchCustomer');
+    // if(value) {
+    //     value.value = null;
+    // }
 
-    let named_sorted_data = customersDetails.toSorted((a, b) => a.name.localeCompare(b.name));
-    appendData(named_sorted_data);
+    if(filtered_data) {
+        filtered_data.sort((a, b) => a.name.localeCompare(b.name));
+        appendData(filtered_data);
+    }
+    else {
+        filtered_data = customersDetails.toSorted((a, b) => a.name.localeCompare(b.name));
+        appendData(filtered_data);
+    }
 }
 
 
 function ascending_balance_sort() {
-    const value = document.getElementById('searchCustomer');
-    if(value) {
-        value.value = null;
+    // let value = document.getElementById('searchCustomer');
+    // if(value) {
+    //     value.value = null;
+    // }
+
+    if(filtered_data) {
+        filtered_data.sort((a,b) => {
+            if(a.amount > b.amount) return 1;
+            else if(a.amount < b.amount) return -1;
+            else return 0;
+        });
+
+        appendData(filtered_data);
     }
+    else {
+        filtered_data = customersDetails.toSorted((a,b) => {
+            if(a.amount > b.amount) return 1;
+            else if(a.amount < b.amount) return -1;
+            else return 0;
+        });
 
-    filtered_data = customersDetails.toSorted((a,b) => {
-        if(a.amount > b.amount) return 1;
-        else if(a.amount < b.amount) return -1;
-        else return 0;
-    });
-
-    isDataSorted = true;
-    appendData(filtered_data);
+        appendData(filtered_data);
+    }
 
 }
 
 function descending_balance_sort() {
-    const value = document.getElementById('searchCustomer');
-    if(value) {
-        value.value = null;
+    // let value = document.getElementById('searchCustomer');
+    // if(value) {
+    //     value.value = null;
+    // }
+
+    if(filtered_data) {
+        filtered_data.sort((a,b) => {
+            if(a.amount > b.amount) return -1;
+            else if(a.amount < b.amount) return 1;
+            else return 0;
+        });
+
+        appendData(filtered_data);
     }
+    else {
+        filtered_data = customersDetails.toSorted((a,b) => {
+            if(a.amount > b.amount) return -1;
+            else if(a.amount < b.amount) return 1;
+            else return 0;
+        });
 
-    filtered_data = customersDetails.toSorted((a,b) => {
-        if(a.amount > b.amount) return -1;
-        else if(a.amount < b.amount) return 1;
-        else return 0;
-    });
-
-    isDataSorted = true;
-    appendData(filtered_data);
+        appendData(filtered_data);
+    }
 }

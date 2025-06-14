@@ -35,28 +35,22 @@
       </button>
     </div>
 
-    <div class="dropdown">
-      <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-        aria-expanded="false">Sort</a>
 
-      <ul class="dropdown-menu sort-dropdown">
-        <li class="dropdown-item" id="sort_by_name" style="cursor: pointer;">
-          <button class="btn btn-outline-link">Sort by Name</button>
-        </li>
-        
-        <!-- <li class="dropdown-item"></li> -->
-        <div class="dropdown-2">
-          <a class="btn btn-outline-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown-2"
-            aria-expanded="false" style="cursor: text;">Sort by Balance</a>
+    <div class="btn-group" role="group" aria-label="Vertical button group">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          Sort
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#" id="sort_by_name">Sort by Name</a></li>
+          <li><a class="dropdown-item" href="#" id="ascending_balance_sort">Balance Low to High</a></li>
+          <li><a class="dropdown-item" href="#" id="descending_balance_sort">Balance High to Low</a></li>
+        </ul>
+      </div>
 
-          <ul class="dropdown-2-menu sort-dropdown-2">
-            <li class="dropdown-item" id="ascending_balance_sort" style="cursor: pointer;">Low to High</li>
-            <li class="dropdown-item" id="descending_balance_sort" style="cursor: pointer;">High to Low</li>
-          </ul>
-        </div>
-        
-      </ul>
+      <button type="button" class="btn btn-outline-primary" id="resetFilters">Reset</button>
     </div>
+
   </div>
 
   <!-- addCustomerModal -->
@@ -88,17 +82,15 @@
   </button> -->
 
   <!-- reNameHandlerModal -->
-  <div class="modal fade" id="reNameHandlerModal" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="reNameHandlerModalLabel" aria-hidden="true">
+  <div class="modal fade" id="reNameHandlerModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="reNameHandlerModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="reNameHandlerModalLabel">New Name</h1>
+          <h1 class="modal-title fs-5" id="reNameHandlerModalLabel">ReName</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <input class="form-control" type="text" placeholder="Enter new name" aria-label="default input example"
-            id="newName">
+          <input class="form-control" type="text" placeholder="Enter new name" aria-label="default input example" id="newName">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelUpdateName">Cancel</button>
@@ -130,7 +122,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" id="proceedDeleteCustomer">Delete</button>
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal"
+            id="proceedDeleteCustomer">Delete</button>
         </div>
       </div>
     </div>
@@ -140,7 +133,8 @@
   <!-- Table -->
   <div class="manualContainer">
     <div class="container tableContainer">
-      <div class="alert alert-warning alert-dismissible fade show" role="alert" id="sameNameCusAlert" style="display: none;"></div>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert" id="sameNameCusAlert"
+        style="display: none;"></div>
 
       <table>
         <thead>
