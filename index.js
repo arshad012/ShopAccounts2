@@ -32,6 +32,8 @@ let customersDetails = JSON.parse(localStorage.getItem('customersDetails')) || [
 
 window.onload = () => {
     appendData(customersDetails);
+
+    showTotalBalance();
 }
 
 
@@ -85,6 +87,9 @@ async function appendData(data) {
     }
 
     data.forEach((cus, i) => {
+
+        const serialNum = document.createElement('td'); // td 0
+        serialNum.innerText = i+1;
 
         const name = document.createElement('td'); // td 1
 
@@ -163,7 +168,7 @@ async function appendData(data) {
 
 
         const tr = document.createElement('tr');
-        tr.append(name, amount, entryField, removeCustomerTd);
+        tr.append(serialNum, name, amount, entryField, removeCustomerTd);
 
         tBody.append(tr);
     })
@@ -217,6 +222,8 @@ function updateData(e, customerName) {
 
         localStorage.setItem('customersDetails', JSON.stringify(customersDetails));
         appendData(customersDetails);
+
+        showTotalBalance();
     }
 }
 
@@ -291,28 +298,19 @@ function resetFilters() {
 
 
 function sort_by_name() {
-    // let value = document.getElementById('searchCustomer');
-    // if(value) {
-    //     value.value = null;
-    // }
-
     if(filtered_data) {
         filtered_data.sort((a, b) => a.name.localeCompare(b.name));
         appendData(filtered_data);
     }
     else {
-        filtered_data = customersDetails.toSorted((a, b) => a.name.localeCompare(b.name));
+        filtered_data = customersDetails.slice();
+        filtered_data.sort((a, b) => a.name.localeCompare(b.name));
         appendData(filtered_data);
     }
 }
 
 
 function ascending_balance_sort() {
-    // let value = document.getElementById('searchCustomer');
-    // if(value) {
-    //     value.value = null;
-    // }
-
     if(filtered_data) {
         filtered_data.sort((a,b) => {
             if(a.amount > b.amount) return 1;
@@ -323,7 +321,8 @@ function ascending_balance_sort() {
         appendData(filtered_data);
     }
     else {
-        filtered_data = customersDetails.toSorted((a,b) => {
+        filtered_data = customersDetails.slice();
+        filtered_data.sort((a,b) => {
             if(a.amount > b.amount) return 1;
             else if(a.amount < b.amount) return -1;
             else return 0;
@@ -335,11 +334,6 @@ function ascending_balance_sort() {
 }
 
 function descending_balance_sort() {
-    // let value = document.getElementById('searchCustomer');
-    // if(value) {
-    //     value.value = null;
-    // }
-
     if(filtered_data) {
         filtered_data.sort((a,b) => {
             if(a.amount > b.amount) return -1;
@@ -350,7 +344,8 @@ function descending_balance_sort() {
         appendData(filtered_data);
     }
     else {
-        filtered_data = customersDetails.toSorted((a,b) => {
+        filtered_data = customersDetails.slice();
+        filtered_data.sort((a,b) => {
             if(a.amount > b.amount) return -1;
             else if(a.amount < b.amount) return 1;
             else return 0;
@@ -358,4 +353,16 @@ function descending_balance_sort() {
 
         appendData(filtered_data);
     }
+}
+
+
+function showTotalBalance() {
+    const total_balance = document.getElementById('total_balance');
+
+    let balance = 0
+    for(let cus of customersDetails) {
+        balance += cus.amount;
+    }
+    
+    total_balance.innerHTML = `Total balance : <i class="fa-solid fa-indian-rupee-sign rupay"></i> ${balance}`;
 }
