@@ -216,7 +216,7 @@ function updateData(e, customerName) {
         }
 
         localStorage.setItem('customersDetails', JSON.stringify(customersDetails));
-        appendData(filtered_data);
+        appendData(customersDetails);
     }
 }
 
