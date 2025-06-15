@@ -86,6 +86,14 @@ async function appendData(data) {
         data = filtered_data;
     }
 
+    if(data.length == 0) {
+        const tr = document.createElement('tr');
+        tr.innerText = 'No data found';
+        tr.className = 'noData';
+        tBody.append(tr)
+        return;
+    }
+
     data.forEach((cus, i) => {
 
         const serialNum = document.createElement('td'); // td 0
@@ -265,6 +273,8 @@ function proceedDeleteCustomer() {
     localStorage.setItem('customersDetails', JSON.stringify(customersDetails));
 
     appendData(customersDetails);
+
+    showTotalBalance();
 }
 
 
@@ -285,6 +295,7 @@ function searchCustomer() {
         });
 
         appendData(filtered_data);
+
     }, 500)
 }
 
