@@ -7,6 +7,7 @@ body {
 .myNavbar {
   background-color: #171c26;
   color: #ffffff;
+  position: relative;
 }
 
 .myNavbar > div {
@@ -16,6 +17,20 @@ body {
   letter-spacing: 0.7rem;
   word-spacing: 3rem;
   font-weight: 700;
+}
+
+#sidebarBtn {
+  /* position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%); */
+}
+
+#logoutbtn {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
 }
 
 .addCustomerModalButtonDiv {
@@ -120,6 +135,10 @@ td {
 #total_balance {
   padding-left: 20px;
   font-size: 20px;
+}
+
+.hr {
+  border: 2px dashed;
 }
 
 

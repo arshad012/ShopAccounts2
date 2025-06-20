@@ -26,13 +26,24 @@ document.getElementById('sort_by_name').addEventListener('click', sort_by_name);
 document.getElementById('ascending_balance_sort').addEventListener('click', ascending_balance_sort);
 document.getElementById('descending_balance_sort').addEventListener('click', descending_balance_sort);
 
+document.getElementById('proceedLogout').addEventListener('click', proceedLogout);
+
+document.getElementById('saveNewPassword').addEventListener('click', saveNewPassword);
+document.getElementById('cancelUpdatePassword').addEventListener('click', cancelUpdatePassword);
 
 let customersDetails = JSON.parse(localStorage.getItem('customersDetails')) || [];
 
 
 window.onload = () => {
-    appendData(customersDetails);
+    const storedPassword = JSON.parse(localStorage.getItem('passwordObj'));
+    if (!storedPassword) {
+        window.location.href = 'index.html';
+    }
+    if (!storedPassword.isPasswordCorrect) {
+        window.location.href = 'index.html';
+    }
 
+    appendData(customersDetails);
     showTotalBalance();
 }
 
@@ -82,11 +93,11 @@ async function appendData(data) {
 
     // this condition is only for mount phase.
     const value = document.getElementById('searchCustomer').value;
-    if(value) {
+    if (value) {
         data = filtered_data;
     }
 
-    if(data.length == 0) {
+    if (data.length == 0) {
         const tr = document.createElement('tr');
         tr.innerText = 'No data found';
         tr.className = 'noData';
@@ -97,7 +108,7 @@ async function appendData(data) {
     data.forEach((cus, i) => {
 
         const serialNum = document.createElement('td'); // td 0
-        serialNum.innerText = i+1;
+        serialNum.innerText = i + 1;
 
         const name = document.createElement('td'); // td 1
 
@@ -225,7 +236,7 @@ function updateData(e, customerName) {
                 }
                 break;
             default:
-                // 
+            // 
         }
 
         localStorage.setItem('customersDetails', JSON.stringify(customersDetails));
@@ -309,7 +320,7 @@ function resetFilters() {
 
 
 function sort_by_name() {
-    if(filtered_data) {
+    if (filtered_data) {
         filtered_data.sort((a, b) => a.name.localeCompare(b.name));
         appendData(filtered_data);
     }
@@ -322,10 +333,10 @@ function sort_by_name() {
 
 
 function ascending_balance_sort() {
-    if(filtered_data) {
-        filtered_data.sort((a,b) => {
-            if(a.amount > b.amount) return 1;
-            else if(a.amount < b.amount) return -1;
+    if (filtered_data) {
+        filtered_data.sort((a, b) => {
+            if (a.amount > b.amount) return 1;
+            else if (a.amount < b.amount) return -1;
             else return 0;
         });
 
@@ -333,9 +344,9 @@ function ascending_balance_sort() {
     }
     else {
         filtered_data = customersDetails.slice();
-        filtered_data.sort((a,b) => {
-            if(a.amount > b.amount) return 1;
-            else if(a.amount < b.amount) return -1;
+        filtered_data.sort((a, b) => {
+            if (a.amount > b.amount) return 1;
+            else if (a.amount < b.amount) return -1;
             else return 0;
         });
 
@@ -345,10 +356,10 @@ function ascending_balance_sort() {
 }
 
 function descending_balance_sort() {
-    if(filtered_data) {
-        filtered_data.sort((a,b) => {
-            if(a.amount > b.amount) return -1;
-            else if(a.amount < b.amount) return 1;
+    if (filtered_data) {
+        filtered_data.sort((a, b) => {
+            if (a.amount > b.amount) return -1;
+            else if (a.amount < b.amount) return 1;
             else return 0;
         });
 
@@ -356,9 +367,9 @@ function descending_balance_sort() {
     }
     else {
         filtered_data = customersDetails.slice();
-        filtered_data.sort((a,b) => {
-            if(a.amount > b.amount) return -1;
-            else if(a.amount < b.amount) return 1;
+        filtered_data.sort((a, b) => {
+            if (a.amount > b.amount) return -1;
+            else if (a.amount < b.amount) return 1;
             else return 0;
         });
 
@@ -371,9 +382,45 @@ function showTotalBalance() {
     const total_balance = document.getElementById('total_balance');
 
     let balance = 0
-    for(let cus of customersDetails) {
+    for (let cus of customersDetails) {
         balance += cus.amount;
     }
-    
+
     total_balance.innerHTML = `Total balance : <i class="fa-solid fa-indian-rupee-sign rupay"></i> ${balance}`;
+}
+
+
+function proceedLogout() {
+    let passwordObj = JSON.parse(localStorage.getItem('passwordObj'));
+
+    passwordObj = {...passwordObj, isPasswordCorrect: false};
+    localStorage.setItem('passwordObj', JSON.stringify(passwordObj));
+    window.location.href = 'index.html';
+}
+
+function saveNewPassword() {
+    const oldPassword = document.getElementById('oldPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+    const passwordObj = JSON.parse(localStorage.getItem('passwordObj'));
+
+    if(passwordObj.password != oldPassword) {
+        // document.getElementById('oldPassword').value = null;
+        alert('Old password not matched');
+    }
+    else if(newPassword != confirmNewPassword) {
+        alert('New password not matched');
+    }
+    else {
+        let passwordObj = JSON.parse(localStorage.getItem('passwordObj'));
+        passwordObj = {...passwordObj, password: newPassword};
+        localStorage.setItem('passwordObj', JSON.stringify(passwordObj));
+    }
+}
+
+function cancelUpdatePassword() {
+    document.getElementById('oldPassword').value = null;
+    document.getElementById('newPassword').value = null;
+    document.getElementById('confirmNewPassword').value = null;
 }
